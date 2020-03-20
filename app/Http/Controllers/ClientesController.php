@@ -14,6 +14,15 @@ class ClientesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected $request;
+    private $repository;
+
+    public function _construct(Request $request, Clientes $cliente)
+    {
+        $this -> request = $$request;
+        $this -> repository = $cliente;
+    }
+
     public function index()
     {
         $clientes = Clientes::orderBy('nome', 'ASC')->paginate(5);
@@ -153,7 +162,7 @@ class ClientesController extends Controller
                 'estado'=>$request->estado,
             ]);
             $mensagem = "Cliente alterado com sucesso!";
-            return redirect()->route('create.index')->with('sucess',$mensagem);
+            return redirect()->route('cliente.index')->with('sucess',$mensagem);
         }
 
         catch (\Exception $e)
@@ -170,7 +179,15 @@ class ClientesController extends Controller
      */
     public function destroy($id)
     {
-        Clientes::destroy($id);
-        return redirect()->route('cliente.index');
-    }
-}
+            try{
+                Clientes::destroy($id);
+                $mensagem = "Cliente excluido com sucesso";
+            }
+            catch(\Exception $e){
+                $mensagem = "Não deletado";
+            }
+            return $mensagem;
+        }
+ }
+
+

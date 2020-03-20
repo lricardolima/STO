@@ -16,4 +16,9 @@ Route::get('/', function () {
 });
 
 Route::resource('cliente', 'ClientesController');
+Route::post('cliente/search', 'ClientesController@search')->name('cliente.search');
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
